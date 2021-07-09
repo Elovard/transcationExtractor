@@ -9,12 +9,12 @@ public class Transaction implements Comparable<Transaction> {
     private String currency;
     private String transactionResult;
 
-    public Transaction(String transactionId,
-                       String userId,
-                       String timestamp,
-                       String amount,
+    public Transaction(String timestamp, // data
+                       String transactionId,
+                       String userId,// uuid
+                       String amount, // double
                        String currency,
-                       String transactionResult) {
+                       String transactionResult /*enum*/) {
 
         this.timestamp = timestamp;
         this.transactionId = transactionId;
