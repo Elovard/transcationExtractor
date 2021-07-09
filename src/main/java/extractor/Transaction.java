@@ -28,48 +28,24 @@ public class Transaction implements Comparable<Transaction> {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public String getAmount() {
         return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
     }
 
     public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
     public String getTransactionResult() {
         return transactionResult;
-    }
-
-    public void setTransactionResult(String transactionResult) {
-        this.transactionResult = transactionResult;
     }
 
     @Override
