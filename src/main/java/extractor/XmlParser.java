@@ -11,10 +11,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class XmlParser implements FileParser {
     private static Scanner scan = new Scanner(System.in);
@@ -47,9 +46,11 @@ public class XmlParser implements FileParser {
 
                     String fromStringToDouble = String.valueOf(parsedAmount);
 
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+                    Date date = format.parse(parsedTimestamp);
 
                     listOfTransactions.add(new Transaction(
-                            parsedTimestamp,
+                            date,
                             parsedTransId,
                             parsedUserId,
                             Double.parseDouble(fromStringToDouble.replaceAll("\\s", "")),
@@ -63,6 +64,8 @@ public class XmlParser implements FileParser {
             System.out.println("XML document can't be created");
         } catch (IOException | SAXException e) {
             System.out.println("IO exception has occurred during parsing the file");
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 

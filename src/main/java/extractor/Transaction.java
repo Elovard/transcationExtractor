@@ -1,17 +1,19 @@
 package extractor;
 
+import java.util.Date;
+
 public class Transaction implements Comparable<Transaction> {
 
-    private String timestamp;
+    private Date timestamp;
     private String transactionId;
     private String userId;
     private double amount;
     private String currency;
     private TransactionStatus transactionResult;
 
-    public Transaction(String timestamp, // data
+    public Transaction(Date timestamp, // data
                        String transactionId,
-                       String userId,// uuid
+                       String userId,
                        double amount,
                        String currency,
                        TransactionStatus transactionResult) {
@@ -32,7 +34,7 @@ public class Transaction implements Comparable<Transaction> {
         return userId;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 

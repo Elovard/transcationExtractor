@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class CsvParser implements FileParser {
 
@@ -31,8 +29,13 @@ public class CsvParser implements FileParser {
 
     public Transaction parseOneLine(String line) {
         String[] parsedData = line.split(",");
+
+        long parsedLong = Long.parseLong(parsedData[0]);
+        Timestamp timestamp = new Timestamp(parsedLong);
+        Date date = new Date(timestamp.getTime());
+
         return new Transaction(
-                parsedData[0],
+                date,
                 parsedData[1],
                 parsedData[2],
                 Double.parseDouble(parsedData[3]),
