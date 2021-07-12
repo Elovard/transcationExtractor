@@ -40,23 +40,26 @@ public abstract class CsvParser {
     public static void parseCsv(String filePath) {
         Path path = Paths.get(filePath);
         try {
-            List<String> contents = Files.readAllLines(path);
-            contents.remove(0);
+            List<String> rows = Files.readAllLines(path);
+            rows.remove(0);
 
-            for (String content : contents) {
-                String[] parsedData = content.split(",");
-                //todo create method "Transaction parseLine(String csvLine)
-                listOfTransactions.add(new Transaction(
-                        parsedData[1],  // TODO: 7/9/21 why so
-                        parsedData[2],
-                        parsedData[0],
-                        parsedData[3],
-                        parsedData[4],
-                        parsedData[5]));
+            for (String row : rows) {
+                listOfTransactions.add(parseLine(row));
             }
         } catch (IOException ex) {
             System.out.println("Can't find your file!");
         }
+    }
+
+    public static Transaction parseLine(String line) {
+        String[] parsedData = line.split(",");
+        return new Transaction(
+                parsedData[0],
+                parsedData[1],
+                parsedData[2],
+                parsedData[3],
+                parsedData[4],
+                parsedData[5]);
     }
 
     public static void printCsvTransactions() {
