@@ -45,11 +45,14 @@ public class XmlParser implements FileParser {
                     String parsedCurrency = eElement.getElementsByTagName("currency").item(0).getTextContent();
                     String parsedStatus = eElement.getElementsByTagName("status").item(0).getTextContent();
 
+                    String fromStringToDouble = String.valueOf(parsedAmount);
+
+
                     listOfTransactions.add(new Transaction(
                             parsedTimestamp,
                             parsedTransId,
                             parsedUserId,
-                            parsedAmount,
+                            Double.parseDouble(fromStringToDouble.replaceAll("\\s", "")),
                             parsedCurrency,
                             TransactionStatus.valueOf(parsedStatus.toUpperCase())));
 
@@ -72,9 +75,10 @@ public class XmlParser implements FileParser {
 
     @Override
     public void printTopFiveTransactions() {
-        List<Integer> amountsOfTransactions = new ArrayList<>();
+        List<Double> amountsOfTransactions = new ArrayList<>();
         for (Transaction transaction : listOfTransactions) {
-            amountsOfTransactions.add(Integer.parseInt(transaction.getAmount().replaceAll("\\s", "")));
+            String convert = String.valueOf(transaction.getAmount());
+            amountsOfTransactions.add(Double.valueOf(convert.replaceAll("\\s", "")));
         }
         if (amountsOfTransactions.size() < 5) {
             System.out.println("The list of transactions contains less than 5 transactions");

@@ -5,16 +5,16 @@ public class Transaction implements Comparable<Transaction> {
     private String timestamp;
     private String transactionId;
     private String userId;
-    private String amount;
+    private double amount;
     private String currency;
     private TransactionStatus transactionResult;
 
     public Transaction(String timestamp, // data
                        String transactionId,
                        String userId,// uuid
-                       String amount, // double
+                       double amount,
                        String currency,
-                       TransactionStatus transactionResult /*enum*/) {
+                       TransactionStatus transactionResult) {
 
         this.timestamp = timestamp;
         this.transactionId = transactionId;
@@ -36,7 +36,7 @@ public class Transaction implements Comparable<Transaction> {
         return timestamp;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -63,8 +63,8 @@ public class Transaction implements Comparable<Transaction> {
 
     @Override
     public int compareTo(Transaction transaction) {
-        int amount1 = Integer.parseInt(this.getAmount());
-        int amount2 = Integer.parseInt(transaction.getAmount());
+        int amount1 = (int) this.getAmount();
+        int amount2 = (int) transaction.getAmount();
 
         if (amount1 > amount2) {
             return 1;

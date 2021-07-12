@@ -35,7 +35,7 @@ public class CsvParser implements FileParser {
                 parsedData[0],
                 parsedData[1],
                 parsedData[2],
-                parsedData[3],
+                Double.parseDouble(parsedData[3]),
                 parsedData[4],
                 TransactionStatus.valueOf(parsedData[5].toUpperCase()));
     }
@@ -49,9 +49,9 @@ public class CsvParser implements FileParser {
 
     @Override
     public void printTopFiveTransactions() {
-        List<Integer> amountsOfTransactions = new ArrayList<>();
+        List<Double> amountsOfTransactions = new ArrayList<>();
         for (Transaction transaction : listOfTransactions) {
-            amountsOfTransactions.add(Integer.parseInt(transaction.getAmount()));
+            amountsOfTransactions.add(transaction.getAmount());
         }
         if (amountsOfTransactions.size() < 5) {
             System.out.println("The list of transactions contains less than 5 transactions");
