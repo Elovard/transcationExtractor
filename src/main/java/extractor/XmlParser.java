@@ -51,7 +51,7 @@ public class XmlParser implements FileParser {
                             parsedUserId,
                             parsedAmount,
                             parsedCurrency,
-                            parsedStatus));
+                            TransactionStatus.valueOf(parsedStatus.toUpperCase())));
 
                 }
             }
@@ -98,21 +98,21 @@ public class XmlParser implements FileParser {
         int rejected = 0;
 
         for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equalsIgnoreCase("complete")) {
+            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("COMPLETE"))) {
                 successful++;
             }
         }
         System.out.println("\tWhere successful: " + successful);
 
         for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equalsIgnoreCase("failure")) {
+            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("FAILURE"))) {
                 failed++;
             }
         }
         System.out.println("\t\t\tfailed: " + failed);
 
         for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equalsIgnoreCase("rejected")) {
+            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("REJECTED"))) {
                 rejected++;
             }
         }

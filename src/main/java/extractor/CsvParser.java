@@ -37,7 +37,7 @@ public class CsvParser implements FileParser {
                 parsedData[2],
                 parsedData[3],
                 parsedData[4],
-                parsedData[5]);
+                TransactionStatus.valueOf(parsedData[5].toUpperCase()));
     }
 
     @Override
@@ -75,21 +75,22 @@ public class CsvParser implements FileParser {
         int rejected = 0;
 
         for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equalsIgnoreCase("success")) {
+            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("SUCCESS"))) {
                 successful++;
             }
         }
         System.out.println("\tWhere successful: " + successful);
 
         for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equalsIgnoreCase("failed")) {
+            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("FAILED"))) {
                 failed++;
             }
         }
+
         System.out.println("\t\t\tfailed: " + failed);
 
         for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equalsIgnoreCase("rejected")) {
+            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("REJECTED"))) {
                 rejected++;
             }
         }

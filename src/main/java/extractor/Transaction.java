@@ -7,14 +7,14 @@ public class Transaction implements Comparable<Transaction> {
     private String userId;
     private String amount;
     private String currency;
-    private String transactionResult;
+    private TransactionStatus transactionResult;
 
     public Transaction(String timestamp, // data
                        String transactionId,
                        String userId,// uuid
                        String amount, // double
                        String currency,
-                       String transactionResult /*enum*/) {
+                       TransactionStatus transactionResult /*enum*/) {
 
         this.timestamp = timestamp;
         this.transactionId = transactionId;
@@ -44,7 +44,7 @@ public class Transaction implements Comparable<Transaction> {
         return currency;
     }
 
-    public String getTransactionResult() {
+    public TransactionStatus getTransactionResult() {
         return transactionResult;
     }
 
