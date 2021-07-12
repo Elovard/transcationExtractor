@@ -11,7 +11,7 @@ public class Transaction implements Comparable<Transaction> {
     private String currency;
     private TransactionStatus transactionResult;
 
-    public Transaction(Date timestamp, // data
+    public Transaction(Date timestamp,
                        String transactionId,
                        String userId,
                        double amount,
