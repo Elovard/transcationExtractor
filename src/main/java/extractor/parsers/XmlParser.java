@@ -1,5 +1,7 @@
-package extractor;
+package extractor.parsers;
 
+import extractor.entity.Transaction;
+import extractor.entity.TransactionStatus;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

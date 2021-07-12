@@ -1,4 +1,6 @@
-package extractor;
+package extractor.parsers;
+
+import extractor.entity.Transaction;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package extractor;
+package extractor.entity;
 
 import java.util.Date;
 

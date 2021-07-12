@@ -1,4 +1,7 @@
-package extractor;
+package extractor.parsers;
+
+import extractor.entity.Transaction;
+import extractor.entity.TransactionStatus;
 
 import java.io.IOException;
 import java.nio.file.Files;
