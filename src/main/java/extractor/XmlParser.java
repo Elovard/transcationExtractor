@@ -16,35 +16,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class XmlParser {
+public class XmlParser implements FileParser {
     private static Scanner scan = new Scanner(System.in);
     private static List<Transaction> listOfTransactions = new ArrayList<>();
 
-    public static void settingUp() {
-        System.out.println("Parsing xml file...");
-        System.out.println("File parsed successfully");
-        System.out.println("Select operation: ");
-        System.out.println("[1] Print data to display \n[2] Print top-5 transactions \n[3] Print totals \n[4] Exit");
-        int choice = scan.nextInt();
-
-        switch (choice) {
-            case 1:
-                XmlParser.printXmlTransactions();
-                break;
-            case 2:
-                XmlParser.printTopFiveTransactions();
-                break;
-            case 3:
-                XmlParser.printXmlTotals();
-                break;
-            case 4:
-                break;
-            default:
-                System.out.println("Invalid number");
-        }
-    }
-
-    public static void parseXml(String filePath) {
+    @Override
+    public void parse(String filePath) {
         File inputFile = new File(filePath);
 
         try {
@@ -69,9 +46,9 @@ public abstract class XmlParser {
                     String parsedStatus = eElement.getElementsByTagName("status").item(0).getTextContent();
 
                     listOfTransactions.add(new Transaction(
+                            parsedTimestamp,
                             parsedTransId,
                             parsedUserId,
-                            parsedTimestamp,
                             parsedAmount,
                             parsedCurrency,
                             parsedStatus));
@@ -86,14 +63,15 @@ public abstract class XmlParser {
         }
     }
 
-    public static void printXmlTransactions() {
+    @Override
+    public List<Transaction> printAllTransactions() {
         System.out.println("Here's the list of transactions: ");
-        for (Transaction transaction : listOfTransactions) {
-            System.out.println(transaction);
-        }
+        listOfTransactions.forEach(System.out::println);
+        return listOfTransactions;
     }
 
-    public static void printTopFiveTransactions() {
+    @Override
+    public void printTopFiveTransactions() {
         List<Integer> amountsOfTransactions = new ArrayList<>();
         for (Transaction transaction : listOfTransactions) {
             amountsOfTransactions.add(Integer.parseInt(transaction.getAmount().replaceAll("\\s", "")));
@@ -111,7 +89,8 @@ public abstract class XmlParser {
                         amountsOfTransactions.get(4));
     }
 
-    public static void printXmlTotals() {
+    @Override
+    public void printTotals() {
         System.out.println("Total number of transactions: " + listOfTransactions.size());
 
         int successful = 0;

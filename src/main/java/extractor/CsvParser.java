@@ -9,49 +9,27 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class CsvParser {
+public class CsvParser implements FileParser {
+
     private static Scanner scan = new Scanner(System.in);
     private static List<Transaction> listOfTransactions = new ArrayList<>();
 
-    public static void settingUp() {
-        System.out.println("Parsing xml file...");
-        System.out.println("File parsed successfully");
-        System.out.println("Select operation: ");
-        System.out.println("[1] Print data to display \n[2] Print top-5 transactions \n[3] Print totals \n[4] Exit");
-        int choice = scan.nextInt();
-
-        switch (choice) {
-            case 1:
-                CsvParser.printCsvTransactions();
-                break;
-            case 2:
-                CsvParser.printTopFiveTransactions();
-                break;
-            case 3:
-                CsvParser.printScvTotals();
-                break;
-            case 4:
-                break;
-            default:
-                System.out.println("Invalid number");
-        }
-    }
-
-    public static void parseCsv(String filePath) {
+    @Override
+    public void parse(String filePath) {
         Path path = Paths.get(filePath);
         try {
             List<String> rows = Files.readAllLines(path);
             rows.remove(0);
 
             for (String row : rows) {
-                listOfTransactions.add(parseLine(row));
+                listOfTransactions.add(parseOneLine(row));
             }
         } catch (IOException ex) {
             System.out.println("Can't find your file!");
         }
     }
 
-    public static Transaction parseLine(String line) {
+    public Transaction parseOneLine(String line) {
         String[] parsedData = line.split(",");
         return new Transaction(
                 parsedData[0],
@@ -62,14 +40,15 @@ public abstract class CsvParser {
                 parsedData[5]);
     }
 
-    public static void printCsvTransactions() {
+    @Override
+    public List<Transaction> printAllTransactions() {
         System.out.println("Here's the list of transactions: ");
-        for (Transaction transaction : listOfTransactions) {
-            System.out.println(transaction);
-        }
+        listOfTransactions.forEach(System.out::println);
+        return listOfTransactions;
     }
 
-    public static void printTopFiveTransactions() {
+    @Override
+    public void printTopFiveTransactions() {
         List<Integer> amountsOfTransactions = new ArrayList<>();
         for (Transaction transaction : listOfTransactions) {
             amountsOfTransactions.add(Integer.parseInt(transaction.getAmount()));
@@ -87,7 +66,8 @@ public abstract class CsvParser {
                         amountsOfTransactions.get(4));
     }
 
-    public static void printScvTotals() {
+    @Override
+    public void printTotals() {
         System.out.println("Total number of transactions: " + listOfTransactions.size());
 
         int successful = 0;
