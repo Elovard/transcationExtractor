@@ -1,4 +1,4 @@
-package extractor.parsers;
+package extractor.parser;
 
 import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
@@ -15,14 +15,17 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 public class XmlParser implements FileParser {
-    private static Scanner scan = new Scanner(System.in);
+
     private static List<Transaction> listOfTransactions = new ArrayList<>();
 
     @Override
-    public void parse(String filePath) {
+    public List<Transaction> parse(String filePath) {
         File inputFile = new File(filePath);
 
         try {
@@ -69,6 +72,7 @@ public class XmlParser implements FileParser {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return listOfTransactions;
     }
 
     @Override
@@ -79,7 +83,7 @@ public class XmlParser implements FileParser {
     }
 
     @Override
-    public void printTopFiveTransactions() {
+    public List<Transaction> printTopFiveTransactions() {
         List<Double> amountsOfTransactions = new ArrayList<>();
         for (Transaction transaction : listOfTransactions) {
             String convert = String.valueOf(transaction.getAmount());
@@ -87,7 +91,7 @@ public class XmlParser implements FileParser {
         }
         if (amountsOfTransactions.size() < 5) {
             System.out.println("The list of transactions contains less than 5 transactions");
-            return;
+            return null;
         }
         amountsOfTransactions.sort(Comparator.reverseOrder());
         System.out.println(
@@ -96,10 +100,11 @@ public class XmlParser implements FileParser {
                         amountsOfTransactions.get(2) + ", " +
                         amountsOfTransactions.get(3) + ", " +
                         amountsOfTransactions.get(4));
+        return listOfTransactions;
     }
 
     @Override
-    public void printTotals() {
+    public List<Transaction> printTotals() {
         System.out.println("Total number of transactions: " + listOfTransactions.size());
 
         int successful = 0;
@@ -126,5 +131,11 @@ public class XmlParser implements FileParser {
             }
         }
         System.out.println("\t\t\trejected: " + rejected);
+        return listOfTransactions;
+    }
+
+    @Override
+    public String getSupportedFileType() {
+        return "xml";
     }
 }

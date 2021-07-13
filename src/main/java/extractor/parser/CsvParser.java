@@ -1,4 +1,4 @@
-package extractor.parsers;
+package extractor.parser;
 
 import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
@@ -8,15 +8,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 public class CsvParser implements FileParser {
 
-    private static Scanner scan = new Scanner(System.in);
     private static List<Transaction> listOfTransactions = new ArrayList<>();
 
     @Override
-    public void parse(String filePath) {
+    public List<Transaction> parse(String filePath) {
         Path path = Paths.get(filePath);
         try {
             List<String> rows = Files.readAllLines(path);
@@ -28,6 +30,7 @@ public class CsvParser implements FileParser {
         } catch (IOException ex) {
             System.out.println("Can't find your file!");
         }
+        return listOfTransactions;
     }
 
     public Transaction parseOneLine(String line) {
@@ -54,14 +57,14 @@ public class CsvParser implements FileParser {
     }
 
     @Override
-    public void printTopFiveTransactions() {
+    public List<Transaction> printTopFiveTransactions() {
         List<Double> amountsOfTransactions = new ArrayList<>();
         for (Transaction transaction : listOfTransactions) {
             amountsOfTransactions.add(transaction.getAmount());
         }
         if (amountsOfTransactions.size() < 5) {
             System.out.println("The list of transactions contains less than 5 transactions");
-            return;
+            return null;
         }
         amountsOfTransactions.sort(Comparator.reverseOrder());
         System.out.println(
@@ -70,10 +73,11 @@ public class CsvParser implements FileParser {
                         amountsOfTransactions.get(2) + ", " +
                         amountsOfTransactions.get(3) + ", " +
                         amountsOfTransactions.get(4));
+        return listOfTransactions;
     }
 
     @Override
-    public void printTotals() {
+    public List<Transaction> printTotals() {
         System.out.println("Total number of transactions: " + listOfTransactions.size());
 
         int successful = 0;
@@ -101,5 +105,11 @@ public class CsvParser implements FileParser {
             }
         }
         System.out.println("\t\t\trejected: " + rejected);
+        return listOfTransactions;
+    }
+
+    @Override
+    public String getSupportedFileType() {
+        return "csv";
     }
 }
