@@ -8,13 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CsvParser implements FileParser {
 
+    private static Scanner scan = new Scanner(System.in);
     private static List<Transaction> listOfTransactions = new ArrayList<>();
 
     @Override

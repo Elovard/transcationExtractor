@@ -15,13 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class XmlParser implements FileParser {
-
+    private static Scanner scan = new Scanner(System.in);
     private static List<Transaction> listOfTransactions = new ArrayList<>();
 
     @Override

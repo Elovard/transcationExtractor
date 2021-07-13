@@ -1,4 +1,4 @@
-package extractor.factory;
+package extractor.factories;
 
 import extractor.parser.FileParser;
 import org.reflections.Reflections;
