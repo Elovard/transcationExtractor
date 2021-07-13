@@ -15,10 +15,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class XmlParser implements FileParser {
-    private static Scanner scan = new Scanner(System.in);
+
     private static List<Transaction> listOfTransactions = new ArrayList<>();
 
     @Override
@@ -69,65 +71,6 @@ public class XmlParser implements FileParser {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return listOfTransactions;
-    }
-
-    @Override
-    public List<Transaction> printAllTransactions() {
-        System.out.println("Here's the list of transactions: ");
-        listOfTransactions.forEach(System.out::println);
-        return listOfTransactions;
-    }
-
-    @Override
-    public List<Transaction> printTopFiveTransactions() {
-        List<Double> amountsOfTransactions = new ArrayList<>();
-        for (Transaction transaction : listOfTransactions) {
-            String convert = String.valueOf(transaction.getAmount());
-            amountsOfTransactions.add(Double.valueOf(convert.replaceAll("\\s", "")));
-        }
-        if (amountsOfTransactions.size() < 5) {
-            System.out.println("The list of transactions contains less than 5 transactions");
-            return null;
-        }
-        amountsOfTransactions.sort(Comparator.reverseOrder());
-        System.out.println(
-                "Top-5 transactions: " + amountsOfTransactions.get(0) + ", " +
-                        amountsOfTransactions.get(1) + ", " +
-                        amountsOfTransactions.get(2) + ", " +
-                        amountsOfTransactions.get(3) + ", " +
-                        amountsOfTransactions.get(4));
-        return listOfTransactions;
-    }
-
-    @Override
-    public List<Transaction> printTotals() {
-        System.out.println("Total number of transactions: " + listOfTransactions.size());
-
-        int successful = 0;
-        int failed = 0;
-        int rejected = 0;
-
-        for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("COMPLETE"))) {
-                successful++;
-            }
-        }
-        System.out.println("\tWhere successful: " + successful);
-
-        for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("FAILURE"))) {
-                failed++;
-            }
-        }
-        System.out.println("\t\t\tfailed: " + failed);
-
-        for (Transaction transaction : listOfTransactions) {
-            if (transaction.getTransactionResult().equals(TransactionStatus.valueOf("REJECTED"))) {
-                rejected++;
-            }
-        }
-        System.out.println("\t\t\trejected: " + rejected);
         return listOfTransactions;
     }
 
