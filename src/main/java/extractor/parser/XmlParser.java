@@ -1,7 +1,10 @@
 package extractor.parser;
 
+import extractor.builder.TransactionBuilder;
 import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,16 +24,21 @@ import java.util.List;
 
 public class XmlParser implements FileParser {
 
-    private static List<Transaction> listOfTransactions = new ArrayList<>();
+    private static final List<Transaction> listOfTransactions = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(XmlParser.class);
 
     @Override
     public List<Transaction> parse(String filePath) {
+        logger.info("entering parse method in XmlParser");
         File inputFile = new File(filePath);
 
+        TransactionBuilder builder = new TransactionBuilder();
+
+
         try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document doc = documentBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("transaction");
 
@@ -53,24 +61,31 @@ public class XmlParser implements FileParser {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
                     Date date = format.parse(parsedTimestamp);
 
-                    listOfTransactions.add(new Transaction(
-                            date,
-                            parsedTransId,
-                            parsedUserId,
-                            Double.parseDouble(fromStringToDouble.replaceAll("\\s", "")),
-                            parsedCurrency,
-                            TransactionStatus.valueOf(parsedStatus.toUpperCase())));
+                    builder.setDate(date);
+                    builder.setTransactionId(parsedTransId);
+                    builder.setUserId(parsedUserId);
+                    builder.setAmount(Double.parseDouble(fromStringToDouble.replaceAll("\\s", "")));
+                    builder.setCurrency(parsedCurrency);
+                    builder.setTransactionStatus(TransactionStatus.valueOf(parsedStatus.toUpperCase()));
+                    Transaction transaction = builder.getResult();
+
+                    logger.info("adding new transaction to the list");
+                    listOfTransactions.add(transaction);
 
                 }
             }
 
         } catch (ParserConfigurationException e) {
             System.out.println("XML document can't be created");
+            logger.error("failed to read XML document");
         } catch (IOException | SAXException e) {
             System.out.println("IO exception has occurred during parsing the file");
+            logger.error("input error during parsing");
         } catch (ParseException e) {
+            logger.error("parse error");
             e.printStackTrace();
         }
+        logger.info("returning the list of transactions");
         return listOfTransactions;
     }
 
