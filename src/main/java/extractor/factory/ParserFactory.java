@@ -2,33 +2,43 @@ package extractor.factory;
 
 import extractor.parser.FileParser;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class ParserFactory {
 
-    public static FileParser createParser(String extension) {
+    public static final String ROOT_PACKAGE = "extractor";
+    private static final Logger logger = LoggerFactory.getLogger(ParserFactory.class);
 
-        Reflections reflections = new Reflections("extractor");
-        Set<Class<? extends FileParser>> classes = reflections.getSubTypesOf(FileParser.class);
+    private final Map<String, FileParser> parsers = new HashMap<>();
 
-        for (Class<? extends FileParser> one : classes) {
+    public ParserFactory() {
+        Reflections reflections = new Reflections(ROOT_PACKAGE);
+        Set<Class<? extends FileParser>> implementationsOfFileParser = reflections.getSubTypesOf(FileParser.class);
+
+        for (Class<? extends FileParser> impl : implementationsOfFileParser) {
             try {
-                Method method = one.getDeclaredMethod("getSupportedFileType", null);
-                String result = (String) method.invoke(one.newInstance(), null);
+                Method method = impl.getDeclaredMethod("getSupportedFileType", null);
+                String result = (String) method.invoke(impl.newInstance(), null);
 
-                if (extension.equals(result)) {
-                    return one.newInstance();
-                }
+                parsers.put(result, impl.newInstance());
+                logger.info("adding parser" + result + " to the list");
 
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("Unsupported type of file");
-        return null;
+    }
+
+    public FileParser createParser(final String extension) {
+        logger.info("creating parser");
+        return this.parsers.get(extension);
     }
 
 }
