@@ -30,9 +30,18 @@ public class Application {
 
         FileParser fileParser = factory.createParser(extension);
         logger.info("created parser");
-        List<Transaction> transactionList = fileParser.parse(path);
-        logger.info("successfully parsed file");
 
+        List<Transaction> transactionList = null;
+
+        try {
+            transactionList = fileParser.parse(path);
+        } catch (NullPointerException ex) {
+            System.out.println("Unsupported type of file!");
+            logger.error("received unsupported file extension");
+            return;
+        }
+
+        logger.info("successfully parsed file");
         System.out.println("Parsing xml file...");
         System.out.println("File parsed successfully");
 
