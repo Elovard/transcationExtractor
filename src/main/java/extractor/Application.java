@@ -18,6 +18,7 @@ public class Application {
 
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
+        boolean isOn = true;
 
         System.out.println("Enter path: ");
         String path = scan.nextLine();
@@ -34,20 +35,22 @@ public class Application {
 
         System.out.println("Parsing xml file...");
         System.out.println("File parsed successfully");
-        System.out.println("Select operation: ");
-        System.out.println("[1] Print data to display \n[2] Print top-5 transactions \n[3] Print totals \n[4] Exit");
 
-        int choice = scan.nextInt();
-        logger.info("reading choice from input");
+        while (isOn) {
+            System.out.println("Select operation: ");
+            System.out.println("[1] Print data to display \n[2] Print top-5 transactions \n[3] Print totals \n[4] Exit");
 
-        switch (choice) {
-            case 1:
+            int choice = scan.nextInt();
+            logger.info("reading choice from input");
+
+            if (choice == 1) {
                 System.out.println("Here's the list of transactions: ");
                 logger.info("looping through the list of transactions");
                 transactionList.forEach(System.out::println);
                 logger.info("showed the list of transactions");
-                break;
-            case 2:
+            }
+
+            if (choice == 2) {
                 List<Double> amountsOfTransactions = new ArrayList<>();
                 logger.info("created list with amounts of transactions");
                 for (Transaction transaction : transactionList) {
@@ -68,8 +71,10 @@ public class Application {
                                 amountsOfTransactions.get(3) + ", " +
                                 amountsOfTransactions.get(4));
                 logger.info("showed top-5 transactions");
-                break;
-            case 3:
+            }
+
+            if (choice == 3) {
+
                 System.out.println("Total number of transactions: " + transactionList.size());
                 logger.info("calculating total number of transactions");
 
@@ -98,13 +103,17 @@ public class Application {
 
 
                 logger.info("finishing calculating total number of transactions");
-                break;
-            case 4:
+            }
+
+            if (choice == 4) {
                 logger.info("received 4 - exiting from the application");
+                isOn = false;
                 break;
-            default:
+            }
+            if (choice >= 5) {
                 logger.error("received incorrect guiding number, exiting");
                 System.out.println("Invalid number");
+            }
         }
     }
 
