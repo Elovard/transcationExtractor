@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Application {
 
-    private static Logger logger = LoggerFactory.getLogger(Application.class);
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
@@ -109,15 +109,8 @@ public class Application {
     }
 
     public static String getExtension(String path) throws Exception {
-        StringBuilder sb = new StringBuilder(path);
-        logger.info("extracting extension from file path");
-        String result = null;
-        try {
-            result = sb.delete(0, sb.length() - 3).toString();
-        } catch (StringIndexOutOfBoundsException ex) {
-            logger.error("received path with length 0 or less");
-            System.out.println("Invalid path with length 0 or less");
-        }
+        String result = path.replaceAll(".*(?=\\.)", "");
+        result = result.replaceAll("\\.", "");
         return result;
     }
 }
