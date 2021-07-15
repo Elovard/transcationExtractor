@@ -14,33 +14,39 @@ public class TransactionBuilder implements Builder {
     private TransactionStatus status;
 
     @Override
-    public void setDate(Date date) {
+    public TransactionBuilder setDate(Date date) {
         this.date = date;
+        return this;
     }
 
     @Override
-    public void setTransactionId(String transactionId) {
+    public TransactionBuilder setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+        return this;
     }
 
     @Override
-    public void setUserId(String userId) {
+    public TransactionBuilder setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     @Override
-    public void setAmount(double amount) {
+    public TransactionBuilder setAmount(double amount) {
         this.amount = amount;
+        return this;
     }
 
     @Override
-    public void setCurrency(String currency) {
+    public TransactionBuilder setCurrency(String currency) {
         this.currency = currency;
+        return this;
     }
 
     @Override
-    public void setTransactionStatus(TransactionStatus status) {
+    public TransactionBuilder setTransactionStatus(TransactionStatus status) {
         this.status = status;
+        return this;
     }
 
     public Transaction getResult() {
