@@ -24,10 +24,11 @@ public class ParserFactory {
 
         for (Class<? extends FileParser> impl : implementationsOfFileParser) {
             try {
+                FileParser implementation = impl.newInstance();
                 Method method = impl.getDeclaredMethod("getSupportedFileType", null);
-                String result = (String) method.invoke(impl.newInstance(), null);
+                String result = (String) method.invoke(implementation, null);
 
-                parsers.put(result, impl.newInstance());
+                parsers.put(result, implementation);
                 logger.info("adding parser" + result + " to the list");
 
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
