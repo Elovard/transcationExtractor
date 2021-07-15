@@ -38,7 +38,7 @@ public class Application {
         } catch (NullPointerException ex) {
             System.out.println("Unsupported type of file!");
             logger.error("received unsupported file extension");
-            return;
+            throw new Exception("Unsupported type of file!");
         }
 
         logger.info("successfully parsed file");
