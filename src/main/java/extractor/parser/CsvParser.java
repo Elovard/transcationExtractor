@@ -20,7 +20,7 @@ public class CsvParser implements FileParser {
     private static final Logger logger = LoggerFactory.getLogger(CsvParser.class);
 
     @Override
-    public List<Transaction> parse(String filePath) {
+    public List<Transaction> parse(String filePath) throws Exception {
         logger.info("entering parse method in CsvParser");
         Path path = Paths.get(filePath);
         try {
@@ -31,8 +31,8 @@ public class CsvParser implements FileParser {
                 listOfTransactions.add(parseOneLine(row));
             }
         } catch (IOException ex) {
-            System.out.println("Can't find your file!");
             logger.error("Can't find this file");
+            throw new Exception("Can't find your file!");
         }
         logger.info("parsed successfully");
         return listOfTransactions;

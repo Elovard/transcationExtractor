@@ -28,7 +28,7 @@ public class XmlParser implements FileParser {
     private static final Logger logger = LoggerFactory.getLogger(XmlParser.class);
 
     @Override
-    public List<Transaction> parse(String filePath) {
+    public List<Transaction> parse(String filePath) throws Exception {
         logger.info("entering parse method in XmlParser");
         File inputFile = new File(filePath);
 
@@ -79,8 +79,8 @@ public class XmlParser implements FileParser {
             System.out.println("XML document can't be created");
             logger.error("failed to read XML document");
         } catch (IOException | SAXException e) {
-            System.out.println("IO exception has occurred during parsing the file");
-            logger.error("input error during parsing");
+            logger.error("can't find this file");
+            throw new Exception("Can't find your file!");
         } catch (ParseException e) {
             logger.error("parse error");
             e.printStackTrace();
