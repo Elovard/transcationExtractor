@@ -32,9 +32,6 @@ public class XmlParser implements FileParser {
         logger.info("entering parse method in XmlParser");
         File inputFile = new File(filePath);
 
-        TransactionBuilder builder = new TransactionBuilder();
-
-
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -61,13 +58,14 @@ public class XmlParser implements FileParser {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
                     Date date = format.parse(parsedTimestamp);
 
-                    builder.setDate(date);
-                    builder.setTransactionId(parsedTransId);
-                    builder.setUserId(parsedUserId);
-                    builder.setAmount(Double.parseDouble(fromStringToDouble.replaceAll("\\s", "")));
-                    builder.setCurrency(parsedCurrency);
-                    builder.setTransactionStatus(TransactionStatus.valueOf(parsedStatus.toUpperCase()));
-                    Transaction transaction = builder.getResult();
+                    Transaction transaction = new TransactionBuilder()
+                            .setDate(date)
+                            .setTransactionId(parsedTransId)
+                            .setUserId(parsedUserId)
+                            .setAmount(Double.parseDouble(fromStringToDouble.replaceAll("\\s", "")))
+                            .setCurrency(parsedCurrency)
+                            .setTransactionStatus(TransactionStatus.valueOf(parsedStatus.toUpperCase()))
+                            .getResult();
 
                     logger.info("adding new transaction to the list");
                     listOfTransactions.add(transaction);

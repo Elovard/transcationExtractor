@@ -1,5 +1,6 @@
 package extractor.parser;
 
+import extractor.builder.TransactionBuilder;
 import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
 import org.slf4j.Logger;
@@ -47,13 +48,14 @@ public class CsvParser implements FileParser {
         Date date = new Date(timestamp.getTime());
 
         logger.info("creating new transaction object");
-        return new Transaction(
-                date,
-                parsedData[1],
-                parsedData[2],
-                Double.parseDouble(parsedData[3]),
-                parsedData[4],
-                TransactionStatus.valueOf(parsedData[5].toUpperCase()));
+        return new TransactionBuilder()
+                .setDate(date)
+                .setTransactionId(parsedData[1])
+                .setUserId(parsedData[2])
+                .setAmount(Double.parseDouble(parsedData[3]))
+                .setCurrency(parsedData[4])
+                .setTransactionStatus(TransactionStatus.valueOf(parsedData[5].toUpperCase()))
+                .getResult();
     }
 
     @Override
