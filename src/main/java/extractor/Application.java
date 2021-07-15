@@ -127,6 +127,10 @@ public class Application {
     }
 
     public static String getExtension(String path) throws Exception {
+        if (path.isEmpty()) {
+            logger.error("invalid file name");
+            throw new Exception("Invalid file name");
+        }
         String result = path.replaceAll(".*(?=\\.)", "");
         result = result.replaceAll("\\.", "");
         return result;
