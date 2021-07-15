@@ -5,16 +5,16 @@ import extractor.entity.TransactionStatus;
 import java.util.Date;
 
 public interface Builder {
-    void setDate(Date date);
+    TransactionBuilder setDate(Date date);
 
-    void setTransactionId(String transactionId);
+    TransactionBuilder setTransactionId(String transactionId);
 
-    void setUserId(String userId);
+    TransactionBuilder setUserId(String userId);
 
-    void setAmount(double amount);
+    TransactionBuilder setAmount(double amount);
 
-    void setCurrency(String currency);
+    TransactionBuilder setCurrency(String currency);
 
-    void setTransactionStatus(TransactionStatus status);
+    TransactionBuilder setTransactionStatus(TransactionStatus status);
 
 }
