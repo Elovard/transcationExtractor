@@ -2,16 +2,18 @@ package extractor;
 
 import extractor.command.Command;
 import extractor.entity.Transaction;
+import extractor.exception.TransactionException;
 import extractor.factory.CommandFactory;
 import extractor.factory.ParserFactory;
 import extractor.parser.FileParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,45 +22,45 @@ public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
     private final Map<Integer, Command> listOfCommands = new HashMap<>();
 
-    public static void main(String[] args) throws Exception {
-        Application app = new Application();
+    public void settingUp(String path) throws Exception {
         CommandFactory commandFactory = new CommandFactory();
-        Scanner scan = new Scanner(System.in);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        String path = args[0];
         logger.info("received path from console");
-        String extension = app.getExtension(path);
+        String extension = Application.getExtension(path);
         logger.info("received extension from method getExtension");
 
         ParserFactory factory = new ParserFactory();
         FileParser fileParser = factory.createParser(extension);
-        logger.info("created parser");
 
-        List<Transaction> transactionList = null;
-
-        try {
-            transactionList = fileParser.parse(path);
-        } catch (NullPointerException ex) {
-            System.out.println("Unsupported type of file!");
-            logger.error("received unsupported file extension");
-            throw new Exception("Unsupported type of file!");
+        if (fileParser == null) {
+            logger.error("received unsupported type of file!");
+            throw new TransactionException("Unsupported type of file!");
         }
+
+        logger.info("created parser");
+        List<Transaction> transactionList = null;
+        transactionList = fileParser.parse(path);
+
 
         logger.info("successfully parsed file");
         System.out.println("Parsing xml file...");
         System.out.println("File parsed successfully");
-        app.printCommands(commandFactory.getCommands());
+
+        initCommandList(commandFactory.getCommands());
+        printCommands();
 
         while (true) {
             System.out.println("Select operation: ");
-            int choice = scan.nextInt();
+            String choiceAsString = reader.readLine();
+            int choice = Integer.parseInt(choiceAsString);
 
             if (choice == 0) {
                 break;
             }
 
             try {
-                Command command = app.listOfCommands.get(choice);
+                Command command = listOfCommands.get(choice);
                 command.execute(transactionList);
             } catch (NullPointerException ex) {
                 System.out.println("Invalid command");
@@ -67,7 +69,7 @@ public class Application {
         }
     }
 
-    public String getExtension(String path) throws Exception {
+    public static String getExtension(String path) throws Exception {
         Pattern pattern = Pattern.compile("\\.([\\w]+)$");
         Matcher matcher = pattern.matcher(path);
         String result = null;
@@ -81,12 +83,17 @@ public class Application {
         return result;
     }
 
-    private void printCommands(List<Command> commands) {
+    public void printCommands() {
         System.out.println("The List of available commands: \n[0]Exit");
-        for (Command command : commands) {
-            listOfCommands.put(command.getCommandId(), command);
-            System.out.println(command.toString());
+        for (Command command : listOfCommands.values()) {
+            System.out.println(command);
         }
     }
 
+    public void initCommandList(List<Command> commands) {
+        logger.info("initializing the list of commands");
+        for (Command command : commands) {
+            listOfCommands.put(command.getCommandId(), command);
+        }
+    }
 }
