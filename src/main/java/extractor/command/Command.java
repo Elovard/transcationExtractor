@@ -12,9 +12,9 @@ public abstract class Command {
         this.commandId = commandId;
     }
 
-    abstract void execute(final List<Transaction> transactionList);
+    public abstract void execute(final List<Transaction> transactionList);
 
-    abstract String getCommandDescription();
+    public abstract String getCommandDescription();
 
     public int getCommandId() {
         return commandId;
