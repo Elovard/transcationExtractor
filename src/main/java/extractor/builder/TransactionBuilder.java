@@ -43,7 +43,7 @@ public class TransactionBuilder {
         return this;
     }
 
-    public Transaction getResult() {
+    public Transaction build() {
         return new Transaction(date, transactionId, userId, amount, currency, status);
     }
 }
