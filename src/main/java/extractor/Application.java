@@ -58,8 +58,13 @@ public class Application {
                 break;
             }
 
-            Command command = app.listOfCommands.get(choice);
-            command.execute(transactionList);
+            try {
+                Command command = app.listOfCommands.get(choice);
+                command.execute(transactionList);
+            } catch (NullPointerException ex) {
+                System.out.println("Invalid command");
+                logger.error("received invalid command from input");
+            }
         }
     }
 
