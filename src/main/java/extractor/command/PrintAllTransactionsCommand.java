@@ -22,6 +22,6 @@ public class PrintAllTransactionsCommand extends Command {
 
     @Override
     public String getCommandDescription() {
-        return "Print all transactions§";
+        return "Print all transactions";
     }
 }
