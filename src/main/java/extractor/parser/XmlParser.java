@@ -3,6 +3,7 @@ package extractor.parser;
 import extractor.builder.TransactionBuilder;
 import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
+import extractor.exception.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -28,7 +29,7 @@ public class XmlParser implements FileParser {
     private static final Logger logger = LoggerFactory.getLogger(XmlParser.class);
 
     @Override
-    public List<Transaction> parse(String filePath) throws Exception {
+    public List<Transaction> parse(String filePath) throws TransactionException {
         logger.info("entering parse method in XmlParser");
         File inputFile = new File(filePath);
 
@@ -65,7 +66,7 @@ public class XmlParser implements FileParser {
                             .setAmount(Double.parseDouble(fromStringToDouble.replaceAll("\\s", "")))
                             .setCurrency(parsedCurrency)
                             .setTransactionStatus(TransactionStatus.valueOf(parsedStatus.toUpperCase()))
-                            .getResult();
+                            .build();
 
                     logger.info("adding new transaction to the list");
                     listOfTransactions.add(transaction);
@@ -78,7 +79,7 @@ public class XmlParser implements FileParser {
             logger.error("failed to read XML document");
         } catch (IOException | SAXException e) {
             logger.error("can't find this file");
-            throw new Exception("Can't find your file!");
+            throw new TransactionException("Can't find your file!");
         } catch (ParseException e) {
             logger.error("parse error");
             e.printStackTrace();

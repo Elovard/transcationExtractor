@@ -3,6 +3,7 @@ package extractor.parser;
 import extractor.builder.TransactionBuilder;
 import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
+import extractor.exception.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,7 @@ public class DatParser implements FileParser {
     private static final Logger logger = LoggerFactory.getLogger(CsvParser.class);
 
     @Override
-    public List<Transaction> parse(String filePath) throws Exception {
+    public List<Transaction> parse(String filePath) throws TransactionException {
         logger.info("entering parse method in DatParser");
         Path path = Paths.get(filePath);
         try {
@@ -33,7 +34,7 @@ public class DatParser implements FileParser {
             }
         } catch (IOException ex) {
             logger.error("Can't find this file");
-            throw new Exception("Can't find your file!");
+            throw new TransactionException("Can't find your file!");
         }
         logger.info("parsed successfully");
         return listOfTransactions;
@@ -55,7 +56,7 @@ public class DatParser implements FileParser {
                 .setAmount(Double.parseDouble(parsedData[3]))
                 .setCurrency(parsedData[4])
                 .setTransactionStatus(TransactionStatus.valueOf(parsedData[5].toUpperCase()))
-                .getResult();
+                .build();
     }
 
     @Override

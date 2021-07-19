@@ -5,7 +5,7 @@ import extractor.entity.Transaction;
 import java.util.List;
 
 public abstract class Command {
-
+    // TODO: 7/19/21 add new command: sum of all failed transactions
     private final int commandId;
 
     public Command(int commandId) {
