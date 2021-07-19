@@ -25,8 +25,8 @@ public class ParserFactory {
         for (Class<? extends FileParser> impl : implementationsOfFileParser) {
             try {
                 FileParser implementation = impl.newInstance();
-                Method method = impl.getDeclaredMethod("getSupportedFileType", null);
-                String result = (String) method.invoke(implementation, null);
+                Method method = impl.getDeclaredMethod("getSupportedFileType");
+                String result = (String) method.invoke(implementation);
 
                 parsers.put(result, implementation);
                 logger.info("adding parser" + result + " to the list");
