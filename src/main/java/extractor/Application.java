@@ -24,7 +24,6 @@ public class Application {
         Application app = new Application();
         CommandFactory commandFactory = new CommandFactory();
         Scanner scan = new Scanner(System.in);
-        boolean isOn = true;
 
         String path = args[0];
         logger.info("received path from console");
