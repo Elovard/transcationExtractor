@@ -44,7 +44,7 @@ public class Application {
 
 
         logger.info("successfully parsed file");
-        System.out.println("Parsing xml file...");
+        System.out.println("Parsing your file...");
         System.out.println("File parsed successfully");
 
         initCommandList(commandFactory.getCommands());
