@@ -60,4 +60,19 @@ public class TransactionService {
         logger.info("top 5 transactions: {}", top5Transactions);
         return top5Transactions;
     }
+
+    public int countSumOfFailedTransactions(final List<Transaction> transactions) {
+        int sumOfFailedTransactions = 0;
+        List<Transaction> listOfFailedTransactions = transactions
+                .stream()
+                .filter(transaction -> TransactionStatus.FAILED.equals(transaction.getTransactionResult()) ||
+                        TransactionStatus.FAILURE.equals(transaction.getTransactionResult()))
+                .collect(Collectors.toList());
+
+        for (Transaction transaction : listOfFailedTransactions) {
+            sumOfFailedTransactions += transaction.getAmount();
+        }
+
+        return sumOfFailedTransactions;
+    }
 }
