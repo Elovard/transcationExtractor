@@ -14,7 +14,13 @@ public class CommandFactory {
 
     private final List<Command> commands = new ArrayList<>();
 
-    public CommandFactory() {
+    private static final CommandFactory INSTANCE = new CommandFactory();
+
+    public static CommandFactory getInstance() {
+        return INSTANCE;
+    }
+
+    private CommandFactory() {
         Reflections reflections = new Reflections(ROOT_PACKAGE);
         Set<Class<? extends Command>> commandImplementations = reflections.getSubTypesOf(Command.class);
 
