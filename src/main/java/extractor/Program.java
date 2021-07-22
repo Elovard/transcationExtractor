@@ -12,7 +12,7 @@ public class Program {
     public static void main(String[] args) throws Exception {
         Application app = new Application();
         try {
-            Map<String, String> arguments = app.readCommandLineArguments(args);
+            Map<String, String> arguments = app.parseCommandLineArguments(args);
 
             String filePath = arguments.get("file");
 
