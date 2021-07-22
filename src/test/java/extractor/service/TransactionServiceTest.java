@@ -119,5 +119,4 @@ class TransactionServiceTest {
         long actualResult = transactionService.countRejectedTransactions(transactions);
         assertEquals(expectedResult, actualResult);
     }
-
 }
