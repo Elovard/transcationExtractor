@@ -27,7 +27,7 @@ public class Application {
     private final Map<Integer, Command> commands = new HashMap<>();
     private final CommandFactory commandFactory = new CommandFactory();
 
-    public Map<String, String> readCommandLineArguments(String[] args) throws ExtensionResolvingException {
+    public Map<String, String> parseCommandLineArguments(String[] args) throws ExtensionResolvingException {
         Map<String, String> arguments = new HashMap<>();
         for (String argument : args) {
             String[] argumentParts = argument.split("=");
@@ -53,6 +53,11 @@ public class Application {
 
     public FileParser resolveParser(String extension) throws ExtensionResolvingException {
         logger.info("received extension from method getExtension");
+        if (extension == null) {
+            logger.error("Invalid extension");
+            throw new ExtensionResolvingException("Invalid extension");
+        }
+
         ParserFactory factory = new ParserFactory();
         FileParser fileParser = factory.createParser(extension);
 
