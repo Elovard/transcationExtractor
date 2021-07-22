@@ -25,10 +25,11 @@ public class Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
     private final Map<Integer, Command> commands = new HashMap<>();
+    private final CommandFactory commandFactory = new CommandFactory();
 
     public Map<String, String> readCommandLineArguments(String[] args) throws ExtensionResolvingException {
         Map<String, String> arguments = new HashMap<>();
-        for (String argument : args) { // file=/file.csv lol=kek=kek vlad=molodec currencyRate=1.345 currencyCode=eur
+        for (String argument : args) {
             String[] argumentParts = argument.split("=");
 
             if (argumentParts.length != 2) {
@@ -109,7 +110,6 @@ public class Application {
     }
 
     public void initCommands() {
-        CommandFactory commandFactory = new CommandFactory(); // make CommandFactory as singleton
         logger.info("initializing list of commands");
         List<Command> commandList = commandFactory.getCommands();
 
