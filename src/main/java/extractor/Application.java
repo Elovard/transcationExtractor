@@ -25,7 +25,7 @@ public class Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
     private final Map<Integer, Command> commands = new HashMap<>();
-    private final CommandFactory commandFactory = new CommandFactory();
+    private final CommandFactory commandFactory = CommandFactory.getInstance();
 
     public Map<String, String> parseCommandLineArguments(String[] args) throws ExtensionResolvingException {
         Map<String, String> arguments = new HashMap<>();
