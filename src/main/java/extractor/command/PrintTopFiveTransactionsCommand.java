@@ -12,8 +12,8 @@ public class PrintTopFiveTransactionsCommand extends Command {
     private static final Logger logger = LoggerFactory.getLogger(PrintTopFiveTransactionsCommand.class);
     private final TransactionService transactionService = TransactionService.getInstance();
 
-    public PrintTopFiveTransactionsCommand(int commandId) {
-        super(commandId);
+    public PrintTopFiveTransactionsCommand() {
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import extractor.entity.Transaction;
 import extractor.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -11,10 +12,11 @@ public class PrintTotalsCommand extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(PrintTotalsCommand.class);
 
-    private final TransactionService transactionService = TransactionService.getInstance();
+    private final TransactionService transactionService;
 
-    public PrintTotalsCommand(int commandId) {
-        super(commandId);
+    @Autowired
+    public PrintTotalsCommand(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     @Override

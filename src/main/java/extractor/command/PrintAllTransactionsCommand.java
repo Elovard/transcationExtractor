@@ -3,15 +3,17 @@ package extractor.command;
 import extractor.entity.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class PrintAllTransactionsCommand extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(PrintAllTransactionsCommand.class);
 
-    public PrintAllTransactionsCommand(int commandId) {
-        super(commandId);
+    public PrintAllTransactionsCommand() {
+
     }
 
     @Override
