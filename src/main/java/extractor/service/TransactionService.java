@@ -4,23 +4,15 @@ import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class TransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
-
-    private static final TransactionService INSTANCE = new TransactionService();
-
-    private TransactionService() {
-
-    }
-
-    public static TransactionService getInstance() {
-        return INSTANCE;
-    }
 
     public long countSuccessfulTransactions(final List<Transaction> transactions) {
         final long successfulTransactions = transactions
