@@ -1,40 +1,29 @@
 package extractor.factory;
 
+import extractor.config.ApplicationContext;
 import extractor.parser.FileParser;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
 
 public class ParserFactory {
 
-    public static final String ROOT_PACKAGE = "extractor";
     private static final Logger logger = LoggerFactory.getLogger(ParserFactory.class);
+    private static final ClassPathXmlApplicationContext context = ApplicationContext.getInstance().getContext();
 
     private final Map<String, FileParser> parsers = new HashMap<>();
 
     public ParserFactory() {
-        Reflections reflections = new Reflections(ROOT_PACKAGE);
-        Set<Class<? extends FileParser>> implementationsOfFileParser = reflections.getSubTypesOf(FileParser.class);
-
-        for (Class<? extends FileParser> impl : implementationsOfFileParser) {
-            try {
-                FileParser implementation = impl.newInstance();
-                Method method = impl.getDeclaredMethod("getSupportedFileType");
-                String result = (String) method.invoke(implementation);
-
-                parsers.put(result, implementation);
-                logger.info("adding parser" + result + " to the list");
-
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                e.printStackTrace();
-            }
+        Collection<FileParser> beans = context.getBeansOfType(FileParser.class).values();
+        for (FileParser parser : beans) {
+            parsers.put(parser.getSupportedFileType(), parser);
         }
+        logger.info("All parsers have been added");
     }
 
     public FileParser createParser(final String extension) {
