@@ -4,16 +4,19 @@ import extractor.entity.Transaction;
 import extractor.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class PrintTopFiveTransactionsCommand extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(PrintTopFiveTransactionsCommand.class);
-    private final TransactionService transactionService = TransactionService.getInstance();
 
-    public PrintTopFiveTransactionsCommand() {
+    private final TransactionService transactionService;
 
+    public PrintTopFiveTransactionsCommand(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     @Override
