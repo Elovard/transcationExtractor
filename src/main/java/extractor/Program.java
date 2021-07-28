@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Program {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         Application app = context.getBean(Application.class);
