@@ -5,6 +5,8 @@ import extractor.exception.ApplicationException;
 import extractor.exception.ExtensionResolvingException;
 import extractor.parser.FileParser;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationTest {
 
-    public Application app = new Application();
+
+    public ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    public Application app = context.getBean(Application.class);
+
 
     @Test
     void whenCommandLineArgumentsContainMoreThanOneCommand_ThenOnlyOneArgumentShouldBeSaved()
