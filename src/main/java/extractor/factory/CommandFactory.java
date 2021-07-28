@@ -1,41 +1,33 @@
 package extractor.factory;
 
 import extractor.command.Command;
-import extractor.config.ApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class CommandFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(CommandFactory.class);
 
-    private final List<Command> commands = new ArrayList<>();
+    @Autowired
+    private final List<Command> commands;
 
-    private static final ClassPathXmlApplicationContext context = ApplicationContext.getInstance().getContext();
-    private static final CommandFactory INSTANCE = new CommandFactory();
-
-    public static CommandFactory getInstance() {
-        return INSTANCE;
+    public CommandFactory(List<Command> commands) {
+        this.commands = commands;
+        init();
+        logger.info("Created CommandFactory");
     }
 
-    private CommandFactory() {
-        Map<String, Command> commandsWithName = context.getBeansOfType(Command.class);
-        Collection<Command> myCommands = commandsWithName.values();
+    private void init() {
         int incrementalCommandId = 1;
-        for (Command command : myCommands) {
-            command.setCommandId(incrementalCommandId);
-            incrementalCommandId++;
-            commands.add(command);
+        for (Command command : commands) {
+            command.setCommandId(incrementalCommandId++);
         }
-        logger.info("All commands have been loaded successfully");
+        logger.info("Finishing initializing commands");
     }
 
     public List<Command> getCommands() {
