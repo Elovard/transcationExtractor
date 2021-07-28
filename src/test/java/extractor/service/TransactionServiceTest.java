@@ -3,6 +3,7 @@ package extractor.service;
 import extractor.entity.Transaction;
 import extractor.entity.TransactionStatus;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TransactionServiceTest {
 
-    private final TransactionService transactionService = TransactionService.getInstance();
+    @Autowired
+    private TransactionService transactionService;
 
     @Test
     void whenNumberOfSuccessfulTransactionsIs5_ThenResultShouldBe5() {
