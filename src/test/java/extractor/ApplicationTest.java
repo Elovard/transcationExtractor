@@ -16,10 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationTest {
 
-
     public ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     public Application app = context.getBean(Application.class);
-
 
     @Test
     void whenCommandLineArgumentsContainMoreThanOneCommand_ThenOnlyOneArgumentShouldBeSaved()

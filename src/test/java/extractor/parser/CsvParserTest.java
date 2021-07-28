@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -17,10 +19,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CsvParserTest {
 
+    public ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
     @Test
     void whenCsvFileExists_ThenResultShouldBeTrue() throws Exception {
         String pathCsv = "csv_example.csv";
-        CsvParser csvParser = new CsvParser();
+        CsvParser csvParser = (CsvParser) context.getBean("csvParser");
         List<Transaction> transactions = csvParser.parse(pathCsv);
         assertNotNull(transactions);
     }
@@ -28,7 +32,7 @@ class CsvParserTest {
     @Test
     void whenCsvFileIsNotExist_ThenExceptionShouldBeThrown() {
         String pathCsv = "noSuchFile";
-        CsvParser csvParser = new CsvParser();
+        CsvParser csvParser = (CsvParser) context.getBean("csvParser");
         assertThrows(Exception.class, () -> csvParser.parse(pathCsv));
     }
 
