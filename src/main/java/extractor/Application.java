@@ -9,6 +9,7 @@ import extractor.factory.ParserFactory;
 import extractor.parser.FileParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,13 +20,21 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class Application {
 
     public static final int EXIT_COMMAND_ID = 0;
 
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
     private final Map<Integer, Command> commands = new HashMap<>();
-    private final CommandFactory commandFactory = CommandFactory.getInstance();
+
+    private final CommandFactory commandFactory;
+    private final ParserFactory parserFactory;
+
+    public Application(CommandFactory commandFactory, ParserFactory parserFactory) {
+        this.commandFactory = commandFactory;
+        this.parserFactory = parserFactory;
+    }
 
     public Map<String, String> parseCommandLineArguments(String[] args) throws ExtensionResolvingException {
         Map<String, String> arguments = new HashMap<>();
@@ -58,8 +67,7 @@ public class Application {
             throw new ExtensionResolvingException("Invalid extension");
         }
 
-        ParserFactory factory = new ParserFactory();
-        FileParser fileParser = factory.createParser(extension);
+        FileParser fileParser = parserFactory.createParser(extension);
 
         if (fileParser == null) {
             logger.error("received unsupported type of file!");
@@ -84,7 +92,7 @@ public class Application {
 
     public void executeCommand(int commandId, List<Transaction> transactions) throws ApplicationException {
         if (!commands.containsKey(commandId)) {
-           throw new ApplicationException("Command with given id: " + commandId + " not found");
+            throw new ApplicationException("Command with given id: " + commandId + " not found");
         }
 
         Command command = commands.get(commandId);
