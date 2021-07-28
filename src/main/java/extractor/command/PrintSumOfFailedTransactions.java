@@ -21,6 +21,7 @@ public class PrintSumOfFailedTransactions extends Command {
 
     @Override
     public void execute(List<Transaction> transactionList) {
+        logger.info("Calculating sum of failed transactions");
         final int sumOfFailedTransactions = transactionService.countSumOfFailedTransactions(transactionList);
         System.out.println("Sum of failed transactions: " + sumOfFailedTransactions);
     }

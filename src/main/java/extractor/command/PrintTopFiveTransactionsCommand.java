@@ -21,6 +21,7 @@ public class PrintTopFiveTransactionsCommand extends Command {
 
     @Override
     public void execute(final List<Transaction> transactions) {
+        logger.info("Calculating top-5 transactions");
         final List<Transaction> top5Transactions = transactionService.getTop5Transactions(transactions);
         System.out.println("Top 5 transactions:");
         top5Transactions.forEach(System.out::println);
